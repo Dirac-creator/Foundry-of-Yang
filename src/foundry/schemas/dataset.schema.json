@@ -1,0 +1,353 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "samples": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/sample"
+      }
+    },
+    "layouts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/layout"
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/artifact"
+      }
+    },
+    "process_runs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/process"
+      }
+    },
+    "measurements": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/measurement"
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "samples",
+    "layouts",
+    "artifacts",
+    "process_runs",
+    "measurements"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_.-]*$"
+    },
+    "quantity": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "enum": [
+            "nm",
+            "s",
+            "K",
+            "Pa",
+            "sccm",
+            "W",
+            "deg",
+            "dB",
+            "dB/cm",
+            "1"
+          ]
+        },
+        "uncertainty": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "value",
+        "unit"
+      ],
+      "additionalProperties": false
+    },
+    "sample": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "enum": [
+            "lot",
+            "wafer",
+            "die",
+            "device"
+          ]
+        },
+        "parent_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "layout_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "position": {
+          "type": "object",
+          "properties": {
+            "reference": {
+              "type": "string",
+              "minLength": 1
+            },
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "unit": {
+              "const": "nm"
+            }
+          },
+          "required": [
+            "reference",
+            "x",
+            "y",
+            "unit"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "parent_id"
+      ],
+      "additionalProperties": false
+    },
+    "layout": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "artifact_id": {
+          "$ref": "#/$defs/id"
+        }
+      },
+      "required": [
+        "id",
+        "revision",
+        "artifact_id"
+      ],
+      "additionalProperties": false
+    },
+    "artifact": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "id",
+        "uri",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "process": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "sample_id": {
+          "$ref": "#/$defs/id"
+        },
+        "process_type": {
+          "enum": [
+            "annealing",
+            "deposition",
+            "etching",
+            "cleaning",
+            "lithography",
+            "other"
+          ]
+        },
+        "recipe_id": {
+          "$ref": "#/$defs/id"
+        },
+        "recipe_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "equipment_id": {
+          "$ref": "#/$defs/id"
+        },
+        "operator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "ended_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/quantity"
+          }
+        },
+        "previous_run_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "artifact_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "id",
+        "sample_id",
+        "process_type",
+        "recipe_id",
+        "recipe_version",
+        "equipment_id",
+        "operator",
+        "started_at",
+        "ended_at",
+        "parameters",
+        "previous_run_ids",
+        "artifact_ids"
+      ],
+      "additionalProperties": false
+    },
+    "measurement": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "sample_id": {
+          "$ref": "#/$defs/id"
+        },
+        "process_run_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "measured_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "method": {
+          "type": "string",
+          "minLength": 1
+        },
+        "instrument_id": {
+          "$ref": "#/$defs/id"
+        },
+        "operator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "quantities": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/quantity"
+          },
+          "minProperties": 1
+        },
+        "conditions": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/quantity"
+          }
+        },
+        "artifact_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true
+        },
+        "supersedes_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "sample_id",
+        "process_run_id",
+        "measured_at",
+        "method",
+        "instrument_id",
+        "operator",
+        "quantities",
+        "conditions",
+        "artifact_ids"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "title": "Foundry data exchange v1.0.0"
+}

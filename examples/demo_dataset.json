@@ -1,0 +1,94 @@
+{
+  "schema_version": "1.0.0",
+  "samples": [
+    {
+      "id": "LOT-001",
+      "kind": "lot",
+      "parent_id": null
+    },
+    {
+      "id": "WAF-001",
+      "kind": "wafer",
+      "parent_id": "LOT-001"
+    },
+    {
+      "id": "DIE-001",
+      "kind": "die",
+      "parent_id": "WAF-001"
+    },
+    {
+      "id": "DEV-001",
+      "kind": "device",
+      "parent_id": "DIE-001"
+    }
+  ],
+  "layouts": [],
+  "artifacts": [],
+  "process_runs": [
+    {
+      "id": "RUN-001",
+      "sample_id": "WAF-001",
+      "process_type": "etching",
+      "recipe_id": "RECIPE-DEMO",
+      "recipe_version": "1",
+      "equipment_id": "TOOL-DEMO",
+      "operator": "demo",
+      "started_at": "2026-09-23T10:00:00+08:00",
+      "ended_at": "2026-09-23T10:01:00+08:00",
+      "parameters": {
+        "duration": {
+          "value": 60,
+          "unit": "s"
+        }
+      },
+      "previous_run_ids": [],
+      "artifact_ids": []
+    }
+  ],
+  "measurements": [
+    {
+      "id": "MEA-001",
+      "sample_id": "DIE-001",
+      "process_run_id": "RUN-001",
+      "measured_at": "2026-09-23T10:30:00+08:00",
+      "method": "Synthetic profilometry example; not experimental data",
+      "instrument_id": "METRO-DEMO",
+      "operator": "demo",
+      "quantities": {
+        "etch_depth": {
+          "value": 120,
+          "unit": "nm",
+          "uncertainty": 5
+        }
+      },
+      "conditions": {},
+      "artifact_ids": []
+    },
+    {
+      "id": "MEA-002",
+      "sample_id": "DEV-001",
+      "process_run_id": "RUN-001",
+      "measured_at": "2026-09-23T11:00:00+08:00",
+      "method": "Synthetic insertion loss measurement; TE polarization; not experimental data",
+      "instrument_id": "OPTICAL-DEMO",
+      "operator": "demo",
+      "quantities": {
+        "loss": {
+          "value": 3.2,
+          "unit": "dB"
+        }
+      },
+      "conditions": {
+        "wavelength": {
+          "value": 1550,
+          "unit": "nm"
+        },
+        "temperature": {
+          "value": 298.15,
+          "unit": "K"
+        }
+      },
+      "artifact_ids": []
+    }
+  ]
+}
