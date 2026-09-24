@@ -46,6 +46,16 @@ async function sample(client){await client.addSample({id:'LOT-001',kind:'lot',pa
 const record=()=>({submission_id:'test-submit-001',sample_id:'WAF-001',process_type:'annealing',occurred_at:'2026-01-01T10:00:00+08:00',equipment_id:null,recipe:null,notes:'test',supersedes_id:null,parameters:{temperature:{value:400,unit:'°C'},duration:{value:30,unit:'min'}}});
 
 test('login only reads, never initializes or uploads data',async()=>{const {server,client}=await setup();assert.equal(server.writes,0);assert.equal(client.visibility,'public');});
+test('default browser fetch keeps the global receiver during login',async(t)=>{
+ const server=new GitServer();
+ t.mock.method(globalThis,'fetch',function(url,options){
+  assert.equal(this,globalThis,'browser fetch requires the Window receiver');
+  return server.fetch(url,options);
+ });
+ const client=new GitHubStore({repository:'owner/repo',token:'test-token',catalog});
+ assert.deepEqual(await client.connect(),{name:'alice',role:'editor',visibility:'public'});
+ assert.equal(server.writes,0);
+});
 test('sample and record normalization, idempotency, and immutable files',async()=>{const {server,client}=await setup();await sample(client);const first=await client.addRecord(record());assert.equal(first.parameters.temperature.value,673.15);assert.equal(first.parameters.duration.value,1800);assert.equal((await client.addRecord(record())).id,first.id);assert.equal(server.state().records.length,1);assert.equal(first.author,'alice');const data=record();data.notes='different';await assert.rejects(client.addRecord(data),/相同提交编号/);});
 test('concurrent writer is preserved without force-push',async()=>{const {server,client}=await setup();await sample(client);server.conflict=()=>server.externalSample();await client.addRecord(record());assert.ok(server.state().samples.some(s=>s.id==='LOT-BOB'));assert.equal(server.state().records.length,1);});
 test('uncertain successful response can be retried without duplication',async()=>{const {server,client}=await setup();await sample(client);server.uncertain=true;await assert.rejects(client.addRecord(record()),/response lost/);await client.addRecord(record());assert.equal(server.state().records.length,1);});

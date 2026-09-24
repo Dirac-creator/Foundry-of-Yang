@@ -10,7 +10,8 @@ const sha256 = async bytes => Array.from(new Uint8Array(await crypto.subtle.dige
 const stable = value => value && typeof value==="object" ? Array.isArray(value)?value.map(stable):Object.fromEntries(Object.keys(value).sort().map(k=>[k,stable(value[k])])) : value;
 const copy = value => JSON.parse(JSON.stringify(value));
 class GitHubStore {
-  constructor({repository,branch="foundry-data",token,catalog,fetcher=fetch}) {
+  // Native browser fetch must keep Window as its receiver when stored on this instance.
+  constructor({repository,branch="foundry-data",token,catalog,fetcher=root.fetch.bind(root)}) {
     assert(/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repository),"仓库应填写 所有者/仓库名");
     assert(/^[A-Za-z0-9_-]{1,80}$/.test(branch),"数据分支只支持字母、数字、下划线和短横线");
     this.repository=repository;this.branch=branch;this.token=token;this.catalog=catalog;this.fetcher=fetcher;
