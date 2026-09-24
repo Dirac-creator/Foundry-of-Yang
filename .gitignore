@@ -21,3 +21,9 @@ outputs/
 *.gds
 *.gdsii
 *.oas
+
+data/local/
+.local/
+backups/
+*.sqlite3
+*.sqlite3-*

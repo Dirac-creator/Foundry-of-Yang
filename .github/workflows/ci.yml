@@ -1,5 +1,8 @@
 name: checks
-on: [push, pull_request]
+on:
+  push:
+    branches-ignore: [foundry-data]
+  pull_request:
 permissions:
   contents: read
 jobs:
@@ -10,6 +13,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: python -m pip install -e ".[dev]"
+      - run: python -m pip install -e ".[dev,server]"
       - run: python -m foundry validate examples/demo_dataset.json
       - run: python -m pytest
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test tests/github-store.test.cjs
+      - run: python scripts/build_pages.py

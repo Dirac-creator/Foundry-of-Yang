@@ -1,0 +1,239 @@
+{
+  "process_types": {
+    "etching": {
+      "label": "刻蚀",
+      "defaults": [
+        "duration",
+        "pressure",
+        "rf_power",
+        "icp_power"
+      ]
+    },
+    "annealing": {
+      "label": "退火",
+      "defaults": [
+        "duration",
+        "temperature",
+        "n2_flow"
+      ]
+    },
+    "deposition": {
+      "label": "长膜 / 镀膜",
+      "defaults": [
+        "duration",
+        "temperature",
+        "pressure",
+        "target_thickness"
+      ]
+    },
+    "cleaning": {
+      "label": "清洗",
+      "defaults": [
+        "duration",
+        "temperature"
+      ]
+    },
+    "lithography": {
+      "label": "光刻",
+      "defaults": [
+        "duration"
+      ]
+    },
+    "other": {
+      "label": "其他工艺",
+      "defaults": [
+        "duration"
+      ]
+    }
+  },
+  "parameters": {
+    "duration": {
+      "label": "持续时间",
+      "unit": "s",
+      "units": {
+        "s": [
+          1,
+          0
+        ],
+        "min": [
+          60,
+          0
+        ],
+        "h": [
+          3600,
+          0
+        ]
+      }
+    },
+    "temperature": {
+      "label": "温度",
+      "unit": "K",
+      "units": {
+        "K": [
+          1,
+          0
+        ],
+        "°C": [
+          1,
+          273.15
+        ]
+      }
+    },
+    "pressure": {
+      "label": "压力",
+      "unit": "Pa",
+      "units": {
+        "Pa": [
+          1,
+          0
+        ],
+        "kPa": [
+          1000,
+          0
+        ],
+        "mTorr": [
+          0.133322368,
+          0
+        ],
+        "Torr": [
+          133.322368,
+          0
+        ]
+      }
+    },
+    "power": {
+      "label": "功率",
+      "unit": "W",
+      "units": {
+        "W": [
+          1,
+          0
+        ]
+      }
+    },
+    "rf_power": {
+      "label": "RF 功率",
+      "unit": "W",
+      "units": {
+        "W": [
+          1,
+          0
+        ]
+      }
+    },
+    "icp_power": {
+      "label": "ICP 功率",
+      "unit": "W",
+      "units": {
+        "W": [
+          1,
+          0
+        ]
+      }
+    },
+    "target_thickness": {
+      "label": "目标膜厚（非实测）",
+      "unit": "nm",
+      "units": {
+        "nm": [
+          1,
+          0
+        ],
+        "um": [
+          1000,
+          0
+        ]
+      }
+    },
+    "ar_flow": {
+      "label": "Ar 流量",
+      "unit": "sccm",
+      "units": {
+        "sccm": [
+          1,
+          0
+        ]
+      }
+    },
+    "o2_flow": {
+      "label": "O2 流量",
+      "unit": "sccm",
+      "units": {
+        "sccm": [
+          1,
+          0
+        ]
+      }
+    },
+    "n2_flow": {
+      "label": "N2 流量",
+      "unit": "sccm",
+      "units": {
+        "sccm": [
+          1,
+          0
+        ]
+      }
+    },
+    "h2_flow": {
+      "label": "H2 流量",
+      "unit": "sccm",
+      "units": {
+        "sccm": [
+          1,
+          0
+        ]
+      }
+    },
+    "sf6_flow": {
+      "label": "SF6 流量",
+      "unit": "sccm",
+      "units": {
+        "sccm": [
+          1,
+          0
+        ]
+      }
+    },
+    "chf3_flow": {
+      "label": "CHF3 流量",
+      "unit": "sccm",
+      "units": {
+        "sccm": [
+          1,
+          0
+        ]
+      }
+    },
+    "cf4_flow": {
+      "label": "CF4 流量",
+      "unit": "sccm",
+      "units": {
+        "sccm": [
+          1,
+          0
+        ]
+      }
+    },
+    "sih4_flow": {
+      "label": "SiH4 流量",
+      "unit": "sccm",
+      "units": {
+        "sccm": [
+          1,
+          0
+        ]
+      }
+    },
+    "n2o_flow": {
+      "label": "N2O 流量",
+      "unit": "sccm",
+      "units": {
+        "sccm": [
+          1,
+          0
+        ]
+      }
+    }
+  }
+}
